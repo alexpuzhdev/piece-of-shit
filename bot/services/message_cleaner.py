@@ -10,7 +10,7 @@ class MessageCleaner(BaseService):
                 chat_id=user_message.chat.id,
                 message_id=user_message.message_id,
             )
-        except Exception:
+        except Exception as err_msg:
             pass
 
     async def delete_bot_message(self, bot_message: types.Message) -> None:
@@ -19,7 +19,7 @@ class MessageCleaner(BaseService):
                 chat_id=bot_message.chat.id,
                 message_id=bot_message.message_id,
             )
-        except Exception:
+        except Exception as err_msg:
             pass
 
     async def clean(

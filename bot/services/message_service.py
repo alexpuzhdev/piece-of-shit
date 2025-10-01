@@ -4,7 +4,7 @@ from bot.services.message_cleaner import MessageCleaner
 from bot.services.message_updater import MessageUpdater
 
 
-class Toolbox:
+class MessageService:
     def __init__(self, bot):
         self.bot = bot
 
@@ -15,4 +15,3 @@ class Toolbox:
     @cached_property
     def updater(self):
         return MessageUpdater(self.bot)
-

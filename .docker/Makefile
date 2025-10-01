@@ -43,3 +43,5 @@ collectstatic:
 # Перезапустить бота
 bot:
 	docker compose restart $(BOT)
+
+docker exec -it expenses_django poetry run python -m project.manage makemigrations
