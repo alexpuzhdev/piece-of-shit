@@ -1,0 +1,30 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtualenv (Poetry / venv)
+.venv/
+.env
+venv/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Pytest / coverage / mypy
+.cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+
+# IDE / editor files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
