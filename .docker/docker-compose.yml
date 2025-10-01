@@ -1,0 +1,65 @@
+services:
+  db:
+    image: postgres:15
+    container_name: expenses_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: expenses
+      POSTGRES_USER: expenses_user
+      POSTGRES_PASSWORD: expenses_pass
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  django:
+    build:
+      context: ..
+      dockerfile: .docker/dockerfiles/django_backend/Dockerfile
+    container_name: expenses_django
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../project:/app/project
+    env_file:
+      - ../project/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+    command: ["/entrypoint.sh"]   # если entrypoint в Dockerfile не прописан
+
+  bot:
+    build:
+      context: ..
+      dockerfile: .docker/dockerfiles/aiogram/Dockerfile
+    container_name: expenses_bot
+    restart: unless-stopped
+    command: poetry run python -m bot.main
+    working_dir: /app
+    volumes:
+      - ../bot:/app/bot
+      - ../project:/app/project
+    env_file:
+      - ../project/.env
+    environment:
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - db
+      - django
+
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ../project/static:/app/project/static
+      - ../project/media:/app/project/media
+    container_name: expenses_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+
+volumes:
+  db_data:
