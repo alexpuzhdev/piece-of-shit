@@ -16,9 +16,11 @@ class ExpenseService:
         for amount, category_name in items:
             category = await CategoryService.get_or_create(category_name)
 
+            normalized_amount = abs(amount)
+
             expense = await Expense.objects.acreate(
                 user=user,
-                amount=amount,
+                amount=normalized_amount,
                 category=category,
                 chat_id=message.chat.id,
                 add_attr={

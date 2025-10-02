@@ -1,6 +1,7 @@
 from asgiref.sync import sync_to_async
 from project.apps.expenses.models import Expense
 from django.db.models import Q, Sum
+from django.db.models.functions import Abs
 from datetime import datetime
 
 
@@ -32,7 +33,7 @@ class ReportService:
         filter_condition = Q(chat_id=chat_id) | Q(add_attr__chat_id=chat_id)
         result = (
             Expense.objects.filter(filter_condition)
-            .aggregate(total=Sum("amount"))
+            .aggregate(total=Sum(Abs("amount")))
         )
         return float(result["total"] or 0)
 
@@ -43,7 +44,7 @@ class ReportService:
         qs = (
             Expense.objects.filter(filter_condition)
             .values("category__name")
-            .annotate(total=Sum("amount"))
+            .annotate(total=Sum(Abs("amount")))
             .order_by("-total")
         )
         return [
