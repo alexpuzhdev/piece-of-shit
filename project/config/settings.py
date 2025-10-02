@@ -7,8 +7,14 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
-CSRF_TRUSTED_ORIGINS = os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+ALLOWED_HOSTS = [
+    host for host in os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",") if host
+]
+CSRF_TRUSTED_ORIGINS = [
+    origin
+    for origin in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin
+]
 
 AUTH_USER_MODEL = "core.User"
 
@@ -65,6 +71,12 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT", "5432"),
     }
 }
+
+if not DATABASES["default"].get("NAME"):
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
