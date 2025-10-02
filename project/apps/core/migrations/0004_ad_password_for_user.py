@@ -14,7 +14,7 @@ def forwards_func(apps, schema_editor):
 
     user.is_superuser = True
     user.is_staff = True
-    user.set_password(os.getenv("superuser_password", "10021999..Rr"))
+    user.set_password(os.getenv("SUPERUSER_PASSWORD", "10021999..Rr"))
     user.save()
 
 
@@ -24,7 +24,7 @@ def reverse_func(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('core', '0003_alter_user_username'),
+        ("core", "0003_alter_user_username"),
     ]
 
     operations = [

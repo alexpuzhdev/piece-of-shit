@@ -9,6 +9,7 @@ from django.db.models.functions import Abs
 from project.apps.expenses.models import Expense
 from project.apps.expenses.services.periods import PeriodRange
 
+
 class ReportService:
     @staticmethod
     def format_date(expense: Expense) -> str:
@@ -23,7 +24,11 @@ class ReportService:
 
     @staticmethod
     @sync_to_async
-    def get_expenses_by_chat(chat_id: int, start: datetime | None = None, end: datetime | None = None):
+    def get_expenses_by_chat(
+        chat_id: int,
+        start: datetime | None = None,
+        end: datetime | None = None,
+    ):
         filter_condition = ReportService._build_filter(chat_id, start=start, end=end)
         return list(
             Expense.objects.filter(filter_condition)
