@@ -3,6 +3,8 @@ from django.core.management.base import BaseCommand
 from aiogram import Bot
 from django.conf import settings
 
+from django.db.models import Q
+
 from project.apps.core.services.user_start_service import UserService
 from project.apps.expenses.services.expense_service import ExpenseService
 from project.apps.expenses.models import Expense
@@ -31,7 +33,7 @@ async def recalculate_chat(chat_id: int, limit: int):
             continue
 
         exists = await Expense.objects.filter(
-            add_attr__chat_id=chat_id,
+            Q(chat_id=chat_id) | Q(add_attr__chat_id=chat_id),
             add_attr__message_id=message.message_id,
         ).aexists()
         if exists:
