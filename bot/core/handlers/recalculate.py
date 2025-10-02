@@ -12,20 +12,20 @@ async def recalculate_chat(message: types.Message, bot: Bot):
     chat_id = message.chat.id
     tool_box = MessageService(bot)
     await tool_box.cleaner.delete_user_message(message)
-    expenses = await ReportService.get_expenses_by_chat(chat_id)
+    category_summary = await ReportService.get_category_summary(chat_id)
 
-    if not expenses:
+    if not category_summary:
         await message.answer("⚠️ В этом чате пока нет записанных расходов.")
         return
 
     total = await ReportService.get_total_by_chat(chat_id)
 
     lines = [
-        f"{e.category.name if e.category else 'Без категории'} - {e.amount:.2f} ₽ ({ReportService.format_date(e)})"
-        for e in expenses[:20]
+        f"{idx}. {category} — {amount:.2f} ₽"
+        for idx, (category, amount) in enumerate(category_summary, start=1)
     ]
 
-    text = "📊 Уже записанные расходы:\n\n"
+    text = "📊 Расходы по категориям:\n\n"
     text += "\n".join(lines)
     text += f"\n\nВсего: {total:.2f} ₽"
 
