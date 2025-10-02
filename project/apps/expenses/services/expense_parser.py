@@ -60,7 +60,7 @@ class ExpenseParser:
     @classmethod
     def parse(cls, text: str) -> List[Tuple[Decimal, str]]:
         lines = [ln.strip() for ln in (text or "").splitlines()]
-        lines = [ln for ln in lines if ln]  # выкидываем пустые
+        lines = [ln for ln in lines if ln]
 
         results: List[Tuple[Decimal, str]] = []
 
@@ -83,7 +83,7 @@ class ExpenseParser:
                 i += 1
                 continue
             if sign == "-":
-                amount = -amount
+                amount = abs(amount)
 
             category = cls._strip_match_from_line(line, m)
 
