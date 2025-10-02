@@ -13,7 +13,7 @@ class ReportService:
                 dt = datetime.fromisoformat(raw_date)
                 return dt.strftime("%Y-%m-%d")
             except Exception:
-                return raw_date  # fallback если вдруг строка битая
+                return raw_date
         return expense.created_at.strftime("%Y-%m-%d")
 
     @staticmethod
@@ -43,4 +43,7 @@ class ReportService:
             .annotate(total=Sum("amount"))
             .order_by("-total")
         )
-        return {row["category__name"] or "Без категории": float(row["total"]) for row in qs}
+        return [
+            (row["category__name"] or "Без категории", float(row["total"]))
+            for row in qs
+        ]

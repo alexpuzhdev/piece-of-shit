@@ -10,7 +10,8 @@ class ExpenseAdmin(admin.ModelAdmin):
         "user",
         "amount",
         "category",
-        "add_attr"
+        "add_attr",
+        "chat_id",
     ]
 
 
@@ -34,7 +35,6 @@ class ExpenseAdmin(admin.ModelAdmin):
         "name",
         "add_attr"
     ]
-
 
 
 @admin.register(CategoryAlias)

@@ -20,8 +20,8 @@ class ExpenseService:
                 user=user,
                 amount=amount,
                 category=category,
+                chat_id=message.chat.id,
                 add_attr={
-                    "chat_id": message.chat.id,
                     "message_id": message.message_id,
                     "date": message.date.isoformat() if message.date else None,
                     "raw_text": message.text,

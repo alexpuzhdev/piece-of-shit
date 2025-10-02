@@ -27,7 +27,7 @@ async def recalculate_chat(chat_id: int, limit: int):
     print(f"🔄 Пересчитываем чат {chat_id} (limit={limit})...")
 
     async for message in bot.get_chat_history(chat_id=chat_id, limit=limit):
-        if not message.text:  # только текстовые сообщения
+        if not message.text:
             continue
 
         exists = await Expense.objects.filter(

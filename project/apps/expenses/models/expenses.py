@@ -17,6 +17,13 @@ class Expense(BaseModelMixin):
         decimal_places=2,
         verbose_name="Сумма",
     )
+    chat_id = models.BigIntegerField(
+        verbose_name="Chat ID",
+        db_index=True,
+        null=True,
+        blank=True,
+    )
+
     category = models.ForeignKey(
         "expenses.Category",
         on_delete=models.SET_NULL,
