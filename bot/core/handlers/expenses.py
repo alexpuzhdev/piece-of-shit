@@ -17,7 +17,6 @@ async def save_expense(message: types.Message, bot: Bot):
         e = expenses[0]
         print(f"✅ Записал: {e.category.name} — {e.amount} ₽")
     else:
-        text = "✅ Записал несколько расходов:\n" + "\n".join(
+        print("✅ Записал несколько расходов:\n" + "\n".join(
             f"{e.category.name} — {e.amount} ₽" for e in expenses
-        )
-        await message.answer(text)
+        ))

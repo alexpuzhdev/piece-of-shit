@@ -24,9 +24,7 @@ async def recalculate_chat(message: types.Message, bot: Bot):
         f"{idx}. {category} — {amount:.2f} ₽"
         for idx, (category, amount) in enumerate(category_summary, start=1)
     ]
-
     text = "📊 Расходы по категориям:\n\n"
     text += "\n".join(lines)
     text += f"\n\nВсего: {total:.2f} ₽"
-
     await message.answer(text)
