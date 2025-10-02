@@ -60,7 +60,7 @@ class ExpenseParser:
     @classmethod
     def parse(cls, text: str) -> List[Tuple[Decimal, str]]:
         lines = [ln.strip() for ln in (text or "").splitlines()]
-        lines = [ln for ln in lines if ln]  # выкидываем пустые
+        lines = [ln for ln in lines if ln]
 
         results: List[Tuple[Decimal, str]] = []
 
@@ -82,11 +82,6 @@ class ExpenseParser:
             if amount is None:
                 i += 1
                 continue
-
-            # Мы учитываем траты, поэтому знак перед суммой
-            # не должен влиять на величину расхода. Если пользователь
-            # поставил «-» перед числом, воспринимаем это как то же
-            # самое значение, что и без знака.
             if sign == "-":
                 amount = abs(amount)
 
