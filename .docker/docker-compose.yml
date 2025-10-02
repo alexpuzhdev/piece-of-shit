@@ -27,7 +27,7 @@ services:
       - PYTHONUNBUFFERED=1
     depends_on:
       - db
-    command: ["/entrypoint.sh"]   # если entrypoint в Dockerfile не прописан
+    command: ["/entrypoint.sh"]
 
   bot:
     build:
@@ -57,7 +57,7 @@ services:
     container_name: expenses_nginx
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "8081:80"
     depends_on:
       - django
 
