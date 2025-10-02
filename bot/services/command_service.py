@@ -70,6 +70,16 @@ class CommandService:
         if date_matches:
             return cls._period_from_dates(date_matches)
 
+        number_in_text = re.search(r"\d+", normalized)
+        if number_in_text and any(key in normalized for key in ("day", "дн", "дней", "дня")):
+            days = int(number_in_text.group())
+            start = cls._start_of_day(now - timedelta(days=days))
+            return PeriodRange(
+                start=start,
+                end=cls._start_of_day(now) + timedelta(days=1),
+                label=f"за последние {days} дн.",
+            )
+
         if normalized.isdigit():
             days = int(normalized)
             start = cls._start_of_day(now - timedelta(days=days))
