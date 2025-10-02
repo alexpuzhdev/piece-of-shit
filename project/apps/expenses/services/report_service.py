@@ -1,6 +1,6 @@
 from asgiref.sync import sync_to_async
 from project.apps.expenses.models import Expense
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from datetime import datetime
 
 
@@ -19,8 +19,9 @@ class ReportService:
     @staticmethod
     @sync_to_async
     def get_expenses_by_chat(chat_id: int):
+        filter_condition = Q(chat_id=chat_id) | Q(add_attr__chat_id=chat_id)
         return list(
-            Expense.objects.filter(add_attr__chat_id=chat_id)
+            Expense.objects.filter(filter_condition)
             .select_related("category", "user")
             .order_by("created_at")
         )
@@ -28,8 +29,9 @@ class ReportService:
     @staticmethod
     @sync_to_async
     def get_total_by_chat(chat_id: int) -> float:
+        filter_condition = Q(chat_id=chat_id) | Q(add_attr__chat_id=chat_id)
         result = (
-            Expense.objects.filter(add_attr__chat_id=chat_id)
+            Expense.objects.filter(filter_condition)
             .aggregate(total=Sum("amount"))
         )
         return float(result["total"] or 0)
@@ -37,8 +39,9 @@ class ReportService:
     @staticmethod
     @sync_to_async
     def get_category_summary(chat_id: int):
+        filter_condition = Q(chat_id=chat_id) | Q(add_attr__chat_id=chat_id)
         qs = (
-            Expense.objects.filter(add_attr__chat_id=chat_id)
+            Expense.objects.filter(filter_condition)
             .values("category__name")
             .annotate(total=Sum("amount"))
             .order_by("-total")
