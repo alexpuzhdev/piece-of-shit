@@ -1,0 +1,104 @@
+[
+  {
+    "model": "core.command",
+    "pk": 1,
+    "fields": {
+      "code": "recalculate",
+      "name": "Пересчитать расходы",
+      "description": "Показывает сводку расходов по категориям",
+      "is_active": true
+    }
+  },
+  {
+    "model": "core.command",
+    "pk": 2,
+    "fields": {
+      "code": "stats",
+      "name": "Статистика",
+      "description": "Отображает краткую статистику по расходам",
+      "is_active": true
+    }
+  },
+  {
+    "model": "core.command",
+    "pk": 3,
+    "fields": {
+      "code": "periods",
+      "name": "Периоды",
+      "description": "Рассказывает про доступные периоды бюджетов",
+      "is_active": true
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 1,
+    "fields": {
+      "command": 1,
+      "alias": "/recalculate"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 2,
+    "fields": {
+      "command": 1,
+      "alias": "пересчет"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 3,
+    "fields": {
+      "command": 1,
+      "alias": "пересчет расходов"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 4,
+    "fields": {
+      "command": 2,
+      "alias": "/stats"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 5,
+    "fields": {
+      "command": 2,
+      "alias": "статистика"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 6,
+    "fields": {
+      "command": 2,
+      "alias": "статистика расходов"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 7,
+    "fields": {
+      "command": 3,
+      "alias": "/periods"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 8,
+    "fields": {
+      "command": 3,
+      "alias": "периоды"
+    }
+  },
+  {
+    "model": "core.commandalias",
+    "pk": 9,
+    "fields": {
+      "command": 3,
+      "alias": "период"
+    }
+  }
+]
