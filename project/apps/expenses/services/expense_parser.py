@@ -82,8 +82,13 @@ class ExpenseParser:
             if amount is None:
                 i += 1
                 continue
+
+            # Мы учитываем траты, поэтому знак перед суммой
+            # не должен влиять на величину расхода. Если пользователь
+            # поставил «-» перед числом, воспринимаем это как то же
+            # самое значение, что и без знака.
             if sign == "-":
-                amount = -amount
+                amount = abs(amount)
 
             category = cls._strip_match_from_line(line, m)
 
