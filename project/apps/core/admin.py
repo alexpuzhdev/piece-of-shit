@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from project.apps.core.models import User
+from project.apps.core.models import Command, CommandAlias, User
 
 
 @admin.register(User)
@@ -19,3 +19,26 @@ class CoreAdmin(admin.ModelAdmin):
         "is_bot",
     )
 
+
+@admin.register(Command)
+class CommandAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "code",
+        "name",
+        "is_active",
+    )
+    list_filter = ("is_active",)
+    search_fields = ("code", "name", "description")
+
+
+@admin.register(CommandAlias)
+class CommandAliasAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "command",
+        "alias",
+        "normalized_alias",
+    )
+    search_fields = ("alias", "normalized_alias", "command__code", "command__name")
+    autocomplete_fields = ("command",)
