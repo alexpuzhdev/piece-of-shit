@@ -5,9 +5,8 @@ from project.apps.core.models import User
 
 class UserService:
     @staticmethod
-    @sync_to_async
-    def get_or_create_from_aiogram(tg_user) -> User:
-        user, created = User.objects.get_or_create(
+    async def get_or_create_from_aiogram(tg_user):
+        user, created = await User.objects.aget_or_create(
             tg_id=tg_user.id,
             defaults={
                 "username": tg_user.username,
@@ -18,3 +17,4 @@ class UserService:
             },
         )
         return user, created
+

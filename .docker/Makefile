@@ -1,45 +1,46 @@
-# Имя сервиса в docker-compose
 DJANGO=django
 BOT=bot
 
-.PHONY: up down logs build shell migrate makemigrations superuser collectstatic bot
+.PHONY: up down logs build shell migrate makemigrations superuser collectstatic bot restart logs-bot logs-django sh-bot
 
-# Запуск всех контейнеров
 up:
-	docker compose up --build -d
+	docker compose up -d
 
-# Остановка всех контейнеров
 down:
 	docker compose down
 
-# Пересборка контейнеров
 build:
 	docker compose build --no-cache
 
-# Логи (все сервисы)
 logs:
 	docker compose logs -f
 
-# Попасть внутрь контейнера Django
+logs-bot:
+	docker compose logs -f $(BOT)
+
+logs-django:
+	docker compose logs -f $(DJANGO)
+
 shell:
 	docker compose exec $(DJANGO) bash
 
-# Применить миграции
+sh-bot:
+	docker compose exec $(BOT) bash
+
 migrate:
 	docker compose exec $(DJANGO) poetry run python -m project.manage migrate
 
-# Создать новые миграции
 makemigrations:
 	docker compose exec $(DJANGO) poetry run python -m project.manage makemigrations
 
-# Создать суперпользователя
 superuser:
 	docker compose exec $(DJANGO) poetry run python -m project.manage createsuperuser
 
-# Собрать статику
 collectstatic:
 	docker compose exec $(DJANGO) poetry run python -m project.manage collectstatic --noinput
 
-# Перезапустить бота
 bot:
 	docker compose restart $(BOT)
+
+restart:
+	docker compose restart
