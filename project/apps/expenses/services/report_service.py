@@ -43,4 +43,7 @@ class ReportService:
             .annotate(total=Sum("amount"))
             .order_by("-total")
         )
-        return {row["category__name"] or "Без категории": float(row["total"]) for row in qs}
+        return [
+            (row["category__name"] or "Без категории", float(row["total"]))
+            for row in qs
+        ]
