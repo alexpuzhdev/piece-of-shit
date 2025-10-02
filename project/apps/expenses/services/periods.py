@@ -11,7 +11,7 @@ class PeriodRange:
 
     start: Optional[datetime] = None
     end: Optional[datetime] = None
-    label: str = "за всё время"
+    label: str = ""
 
     def duration(self):
         if self.start and self.end:
