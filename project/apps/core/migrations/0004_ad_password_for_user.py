@@ -7,7 +7,7 @@ from django.db import migrations
 
 def forwards_func(apps, schema_editor):
     user_model = get_user_model()
-    user = user_model.objects.get(username="apuzhinskii")
+    user = user_model.objects.filter(username="apuzhinskii").first()
 
     if user:
         user.is_superuser = True

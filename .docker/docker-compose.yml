@@ -3,14 +3,22 @@ services:
     image: postgres:15
     container_name: expenses_db
     restart: unless-stopped
+    env_file:
+      - ../.env
     environment:
-      POSTGRES_DB: expenses
-      POSTGRES_USER: expenses_user
-      POSTGRES_PASSWORD: expenses_pass
+      # postgres image читает именно эти переменные
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-piece_of_shit_user} -d ${POSTGRES_DB:-piece_of_shit}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   django:
     build:
@@ -21,12 +29,18 @@ services:
     working_dir: /app
     volumes:
       - ../project:/app/project
+      - static_data:/app/project/static
+      - media_data:/app/project/media
     env_file:
-      - ../project/.env
+      - ../.env
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      # Внутри Docker БД доступна по имени сервиса «db»
+      - POSTGRES_HOST=db
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     command: ["/entrypoint.sh"]
 
   bot:
@@ -35,27 +49,31 @@ services:
       dockerfile: .docker/dockerfiles/aiogram/Dockerfile
     container_name: expenses_bot
     restart: unless-stopped
-    command: poetry run python -m bot.main
     working_dir: /app
     volumes:
       - ../bot:/app/bot
       - ../project:/app/project
     env_file:
-      - ../project/.env
+      - ../.env
     environment:
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
+      - POSTGRES_HOST=db
     depends_on:
-      - db
-      - django
+      db:
+        condition: service_healthy
+      django:
+        condition: service_started
+    command: ["python", "bot/main.py"]
 
   nginx:
     image: nginx:1.27-alpine
-    volumes:
-      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../project/static:/app/project/static
-      - ../project/media:/app/project/media
     container_name: expenses_nginx
     restart: unless-stopped
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_data:/app/project/static:ro
+      - media_data:/app/project/media:ro
     ports:
       - "8081:80"
     depends_on:
@@ -63,3 +81,5 @@ services:
 
 volumes:
   db_data:
+  static_data:
+  media_data:

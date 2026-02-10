@@ -1,0 +1,10 @@
+BOT_TOKEN=your-telegram-bot-token
+DJANGO_SECRET_KEY=change-me-to-random-string
+DJANGO_ALLOWED_HOSTS=*
+DJANGO_CSRF_TRUSTED_ORIGINS=http://localhost:8081
+
+POSTGRES_DB=piece_of_shit
+POSTGRES_USER=piece_of_shit_user
+POSTGRES_PASSWORD=piece_of_shit_password
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432

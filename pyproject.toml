@@ -5,7 +5,7 @@ description = "desc"
 authors = ["alexpuzhdev <168548067+alexpuzhdev@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 django = "^5.2.6"
 djangorestframework = "^3.16.1"
 django-filter = "^24.3"

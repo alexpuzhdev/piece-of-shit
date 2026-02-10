@@ -34,3 +34,15 @@ class ExpenseService:
             expenses.append(expense)
 
         return expenses
+
+    @staticmethod
+    async def create_quick(user: User, amount, category, chat_id: int) -> Expense:
+        """Создаёт расход из быстрого ввода (без парсинга сообщения)."""
+        from project.apps.expenses.models import Category as CategoryModel
+        return await Expense.objects.acreate(
+            user=user,
+            amount=abs(amount),
+            category=category,
+            chat_id=chat_id,
+            add_attr={"source": "quick_entry"},
+        )
